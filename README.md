@@ -1,86 +1,78 @@
-# Redis Caching Architecture
+# Redis Caching — Property Listings (ENG-134560)
 
-Architecture and database planning for the Property Listings Redis Caching module.
+A staff-facing interface for the Property Listings Redis caching module.
 
-## Scope
+The application provides search, add, edit, and delete operations against a real
+Redis-backed serverless API using Upstash Redis. Redis credentials remain
+server-side and are never exposed to browser code.
 
-This repository intentionally contains **no feature implementation code**. It is the Capstone 1 architectural-planning deliverable for the Redis Caching module.
+## Run it
 
-The design addresses:
+```bash
+npm install
+npm run start
+```
 
-- Clear staff-facing Redis Caching interface requirements
-- Consistent data structures
-- Empty states
-- Slow/spotty connectivity and loading behavior
-- Invalid-input handling
-- Accessibility requirements
-- Simulated analytics telemetry
-- XSS-safe text handling
-- PostgreSQL persistence and Redis caching
-- API contracts and error responses
+For local development, configure the Redis environment variables below. A local
+`.env` file is ignored by Git.
 
-## Repository Structure
+## Environment variables
 
-```text
+Set these in Vercel Project Settings → Environment Variables:
+
+- `UPSTASH_REDIS_REST_URL`
+- `UPSTASH_REDIS_REST_TOKEN`
+
+Never commit real credentials.
+
+## Redis data model
+
+Each cache entry is stored under
+`property-listings:cache:entry:<id>`. An index set named
+`property-listings:cache:index` keeps active entry IDs. Redis TTL expiration
+is applied to every entry; expired IDs are removed from the index during reads.
+
+## Project structure
+
+```
 redis-caching-architecture/
-├── database/
-│   └── schema.sql
-├── design/
-│   └── design-system.css
-├── docs/
-│   ├── API.md
-│   ├── ARCHITECTURE.md
-│   ├── ERD.md
-│   └── ACCEPTANCE-CRITERIA.md
-├── .env.example
-├── .gitignore
-└── README.md
+├── index.html
+├── package.json
+├── api/cache.js
+├── js/app.js
+├── js/api.js
+├── js/sanitize.js
+├── css/design-system.css
+├── css/app.css
+├── database/schema.sql
+└── docs/
+    ├── ARCHITECTURE.md
+    ├── API.md
+    ├── ERD.md
+    ├── ACCEPTANCE-CRITERIA.md
+    └── DEPLOYMENT.md
 ```
 
-## Architecture Summary
+## Requirements coverage
 
-```text
-Staff UI
-   |
-   v
-API Layer
-   |
-   +------------------+
-   |                  |
-   v                  v
-Redis Cache       PostgreSQL
-   |                  |
-   +--------+---------+
-            |
-            v
-       Audit / Metrics
+- Empty lists/searches show a clear `No data found` message.
+- Every asynchronous operation displays a loading indicator.
+- Invalid input blocks submission and highlights offending fields in red.
+- Interactive controls have labels/ARIA attributes and visible keyboard focus.
+- Primary actions emit the required `[Analytics]` console message.
+- Text is sanitized before entering application state/API payloads and escaped
+  before HTML rendering.
+- Redis access is server-side only; no Redis credentials are shipped to the browser.
+- CSS uses centralized monochromatic design tokens and 16/32px spacing steps.
+- Redis errors return a friendly HTTP 503 response instead of crashing the UI.
+
+## Lint
+
+```bash
+npm run lint
 ```
 
-Redis is the fast-access caching layer; PostgreSQL is the durable source of record. Redis is appropriate for caching because it provides in-memory data structures, expiration, and cache-oriented access patterns. See the official Redis project documentation for background. 
+## Deployment
 
-## Key Planning Decisions
-
-1. **PostgreSQL** is the persistent relational database.
-2. **Redis** is the caching layer, not the source of record.
-3. API contracts are defined before feature implementation.
-4. Validation is required at the API boundary.
-5. User-facing text must be safely handled before persistence.
-6. Every asynchronous UI operation has a loading state and failure state.
-7. Accessibility is treated as a release gate, with a target Lighthouse accessibility score of 100.
-8. No real credentials or secrets belong in this repository.
-
-## Verification Before Implementation
-
-Before feature code is introduced in a later milestone, verify:
-
-- `schema.sql` executes successfully on PostgreSQL.
-- Every API contract has request, response, validation, and error definitions.
-- Lighthouse accessibility reaches 100.
-- ESLint reports 0 errors and 0 warnings once implementation code exists.
-- No real secrets or PII are committed.
-
-## Current Milestone
-
-**Capstone 1 — Database Schema & API Architecture**
-
-No feature code is intentionally included in this milestone.
+Vercel serves the static frontend and the `api/cache.js` serverless function.
+Configure both Upstash variables before deployment.
