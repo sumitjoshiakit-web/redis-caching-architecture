@@ -1,9 +1,9 @@
 {
-  "name": "redis-caching-property-listings",
-  "version": "1.0.0",
-  "private": true,
-  "description": "Staff interface for the Property Listings Redis caching module (ENG-134560).",
-  "scripts": {"lint":"eslint js/**/*.js","start":"npx serve ."},
-  "devDependencies":{"eslint":"^8.57.0"},
-  "dependencies":{"@upstash/redis":"^1.35.0"}
+  "name":"redis-caching-property-listings",
+  "version":"1.0.0",
+  "private":true,
+  "type":"module",
+  "scripts":{"dev":"vite","build":"vite build","preview":"vite preview","lint":"eslint . --ext js,jsx"},
+  "dependencies":{"@upstash/redis":"^1.35.0","@vitejs/plugin-react":"latest","vite":"latest","react":"latest","react-dom":"latest"},
+  "devDependencies":{"eslint":"^8.57.0"}
 }
