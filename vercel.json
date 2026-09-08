@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "api/cache.js": {
+      "runtime": "nodejs20.x"
+    }
+  }
+}
