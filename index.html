@@ -1,48 +1,5 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Redis Caching — Property Listings</title>
-  <link rel="stylesheet" href="css/design-system.css" />
-  <link rel="stylesheet" href="css/app.css" />
-</head>
-<body>
-  <div class="app-shell">
-    <header class="app-header">
-      <div><h1>Property Listings Cache</h1><p>Look up, add, and retire cache entries for active listings.</p></div>
-      <button type="button" class="btn" id="add-entry-btn" aria-label="Add a new cache entry">Add cache entry</button>
-    </header>
-    <div class="toolbar">
-      <div class="field">
-        <label for="search-input">Search by cache key</label>
-        <input type="search" id="search-input" name="search" placeholder="e.g. listing:property:4471" aria-describedby="search-hint" />
-        <span id="search-hint" class="visually-hidden">Results update automatically as you type.</span>
-      </div>
-    </div>
-    <div id="status-region" aria-live="polite"></div>
-    <div class="table-wrap" id="table-wrap">
-      <table id="entries-table">
-        <caption>Cache entries</caption>
-        <thead><tr><th scope="col">Cache key</th><th scope="col">Value</th><th scope="col">TTL</th><th scope="col"><span class="visually-hidden">Actions</span></th></tr></thead>
-        <tbody id="entries-body"></tbody>
-      </table>
-    </div>
-  </div>
-  <div class="modal-overlay" id="modal-overlay" hidden>
-    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-      <h2 id="modal-title">Add cache entry</h2>
-      <form id="entry-form" novalidate>
-        <div class="field"><label for="cache-key">Cache key</label><input type="text" id="cache-key" name="cacheKey" aria-describedby="cache-key-error" /><span id="cache-key-error" class="error-message" role="alert"></span></div>
-        <div class="field"><label for="cache-value">Cache value (JSON)</label><textarea id="cache-value" name="cacheValue" aria-describedby="cache-value-error"></textarea><span id="cache-value-error" class="error-message" role="alert"></span></div>
-        <div class="field"><label for="ttl-seconds">TTL (seconds)</label><input type="number" id="ttl-seconds" name="ttlSeconds" min="1" aria-describedby="ttl-error" /><span id="ttl-error" class="error-message" role="alert"></span></div>
-        <div class="modal-actions">
-          <button type="button" class="btn btn-secondary" id="cancel-btn" aria-label="Cancel and close dialog">Cancel</button>
-          <button type="submit" class="btn" aria-label="Save cache entry">Save entry</button>
-        </div>
-      </form>
-    </div>
-  </div>
-  <script type="module" src="js/app.js"></script>
-</body>
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><meta name="description" content="Property Listings Redis Cache Management"/><title>Property Listings Cache</title></head>
+<body><div id="root"></div><script type="module" src="/src/main.jsx"></script></body>
 </html>
