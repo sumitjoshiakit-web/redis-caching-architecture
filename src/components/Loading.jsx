@@ -1,0 +1,1 @@
+export default function Loading(){return <div className="status-line" role="status"><span className="spinner" aria-hidden="true"/>Loading cache entries…</div>;}
